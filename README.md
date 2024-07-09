@@ -15,7 +15,7 @@
 
 ## Comments
 * weather4cast-2023-lxz
-  * dataset can be downloaded [here](https://weather4cast.net/get-the-data/)
+  * dataset can be downloaded [here](https://weather4cast.net/get-the-data/) (or [here](https://cds.climate.copernicus.eu/#!/home))
   * train_stage1.py: submodule UNet of model MoE is causing errors
     sat2rad() should return a Tensor but returns tuple
   * train.py: somehow causes remote server to go down
