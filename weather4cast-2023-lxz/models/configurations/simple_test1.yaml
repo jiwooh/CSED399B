@@ -109,8 +109,8 @@ dataset:
       standardise: True
 
 train:    # model training settings
-  batch_size: 16
-  max_epochs: 5 # 20
+  batch_size: 2 # 16
+  max_epochs: 1 # 20
   n_workers: 8  # 8
   loss: mse
   pos_weight: 6.114572
@@ -127,6 +127,6 @@ model:    # model definition settings
   nb_filter: [32, 64, 128, 256, 512] # UNet hidden channels
 
 predict:  # model prediction settings
-  region_to_predict: boxi_0015  # must match one of the names defined in 'dataset' / 'regions'
+  region_to_predict: roxi_0005  # must match one of the names defined in 'dataset' / 'regions'
   year_to_predict: 2019
   submission_out_dir: "submission"
