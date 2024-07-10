@@ -50,6 +50,11 @@ from datetime import datetime, timedelta
 VERBOSE = False
 # VERBOSE = True
 
+###
+os.environ["HDF5_USE_FILE_LOCKING"] = "FALSE"
+# Solves below error
+# BlockingIOError: [Errno 11] Unable to create file (unable to lock file, errno = 11, error message = 'Resource temporarily unavailable')
+###
 
 # __________________________________________________CREATING/LOADING SAMPLE IDS____________________________________________________
 
