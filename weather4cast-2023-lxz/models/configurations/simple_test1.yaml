@@ -109,8 +109,8 @@ dataset:
       standardise: True
 
 train:    # model training settings
-  batch_size: 2 # 16
-  max_epochs: 1 # 20
+  batch_size: 4 # 16
+  max_epochs: 2 # 20
   n_workers: 8  # 8
   loss: mse
   pos_weight: 6.114572
