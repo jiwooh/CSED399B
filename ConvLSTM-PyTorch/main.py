@@ -26,8 +26,10 @@ from tqdm import tqdm
 import numpy as np
 from tensorboardX import SummaryWriter
 import argparse
+from datetime import datetime ###
 
-TIMESTAMP = "2020-03-09T00-00-00"
+# TIMESTAMP = "2020-03-09T00-00-00"
+TIMESTAMP = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 parser = argparse.ArgumentParser()
 parser.add_argument('-clstm',
                     '--convlstm',
