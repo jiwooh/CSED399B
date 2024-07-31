@@ -101,9 +101,12 @@ class RainData(Dataset):
         self.preprocess_target = preprocess_OPERA
         self.size_target_center = size_target_center
         self.full_opera_context = full_opera_context
-        self.crop = int(
-            (self.full_opera_context - self.size_target_center) / 2
-        )  # calculate centre of image to begin crop
+        try:
+            self.crop = int(
+                (self.full_opera_context - self.size_target_center) / 2
+            )  # calculate centre of image to begin crop
+        except TypeError:
+            pass
         self.preprocess_input = preprocess_HRIT
         self.path_to_sample_ids = path_to_sample_ids
         self.regions_def = regions_def
