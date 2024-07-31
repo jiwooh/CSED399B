@@ -462,6 +462,8 @@ def get_file(
         print(time.time() - file_t, "reading file time")
     if product == "RATE":
         for b in ["rainfall_rate-500X500"]:
+            if preprocess is None:
+                break
             if preprocess[product][b]["mask"]:
                 mask = create_mask(x, preprocess[product][b]["mask"])
                 masks.append(mask)
@@ -472,6 +474,8 @@ def get_file(
                 print(time.time() - file_t, "OPERA preprocess time")
     else:
         for j, b in enumerate(bands):
+            if preprocess is None:
+                break
             if preprocess is not None:
                 x[j] = preprocess_HRIT(x[j], preprocess[b])
             if VERBOSE:
