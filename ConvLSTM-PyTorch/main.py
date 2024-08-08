@@ -28,6 +28,9 @@ from tensorboardX import SummaryWriter
 import argparse
 from datetime import datetime ###
 
+import pytorch_lightning as pl
+from utils_w4c.w4c_dataloader import RainData
+
 # TIMESTAMP = "2020-03-09T00-00-00"
 TIMESTAMP = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 parser = argparse.ArgumentParser()
@@ -65,18 +68,63 @@ else:
 torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
 
-save_dir = './save_model/' + TIMESTAMP
+class DataModule(pl.LightningDataModule):
+    """ Class to handle training/validation splits in a single object
+    """
+    def __init__(self, params, training_params, mode):
+        super().__init__()
+        self.params = params     
+        self.training_params = training_params
+        if mode in ['train']:
+            print("Loading TRAINING/VALIDATION dataset -- as test")
+            self.train_ds = RainData('training', **self.params)
+            self.val_ds = RainData('validation', **self.params)
+            print(f"Training dataset size: {len(self.train_ds)}")
+        if mode in ['val']:
+            print("Loading VALIDATION dataset -- as test")
+            self.val_ds = RainData('validation', **self.params)  
+        if mode in ['predict']:    
+            print("Loading PREDICTION/TEST dataset -- as test")
+            self.test_ds = RainData('test', **self.params)
 
-trainFolder = MovingMNIST(is_train=True,
-                          root='data/',
-                          n_frames_input=args.frames_input,
-                          n_frames_output=args.frames_output,
-                          num_objects=[3])
-validFolder = MovingMNIST(is_train=False,
-                          root='data/',
-                          n_frames_input=args.frames_input,
-                          n_frames_output=args.frames_output,
-                          num_objects=[3])
+    def __load_dataloader(self, dataset, shuffle=True, pin=True):
+        dl = DataLoader(dataset, 
+                        batch_size=self.training_params['batch_size'],
+                        num_workers=self.training_params['n_workers'],
+                        shuffle=shuffle, 
+                        pin_memory=pin, prefetch_factor=2,
+                        persistent_workers=False)
+        return dl
+    
+    def train_dataloader(self):
+        return self.__load_dataloader(self.train_ds, shuffle=True, pin=True)
+    
+    def val_dataloader(self):
+        return self.__load_dataloader(self.val_ds, shuffle=False, pin=True)
+
+    def test_dataloader(self):
+        return self.__load_dataloader(self.test_ds, shuffle=False, pin=True)
+
+# trainFolder = MovingMNIST(is_train=True,
+#                           root='data/',
+#                           n_frames_input=args.frames_input,
+#                           n_frames_output=args.frames_output,
+#                           num_objects=[3])
+# validFolder = MovingMNIST(is_train=False,
+#                           root='data/',
+#                           n_frames_input=args.frames_input,
+#                           n_frames_output=args.frames_output,
+#                           num_objects=[3])
+
+trainFolder = RainData(data_split='training',
+                       data_root='../weather4cast-2023-lxz/data/',
+                       len_seq_in=args.frames_input,
+                       len_seq_predict=args.frames_output)
+validFolder = RainData(data_split='validation',
+                       data_root='/weather4cast-2023-lxz/data/',
+                       len_seq_in=args.frames_input,
+                       len_seq_predict=args.frames_output)
+
 trainLoader = torch.utils.data.DataLoader(trainFolder,
                                           batch_size=args.batch_size,
                                           shuffle=False)
