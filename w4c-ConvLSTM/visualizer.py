@@ -16,16 +16,20 @@ from utils.data_utils import get_cuda_memory_usage
 from utils.data_utils import tensor_to_submission_file
 from utils.w4c_dataloader import RainData
 
+import random
+
 data = RainData(
-    'validation',
+    'training',
     data_root='../weather4cast-2023-lxz/data/',
     sat_bands=['IR_016', 'IR_039', 'IR_087', 'IR_097', 'IR_108', 'IR_120', 'IR_134', 'VIS006', 'VIS008', 'WV_062', 'WV_073'],
-    regions=['roxi_0004'],
+    regions=['boxi_0015'],
     full_opera_context=1512,
     size_target_center=252,
     years=['2019'],
     splits_path='../weather4cast-2023-lxz/data/timestamps_and_splits_stage2.csv'
 )
+
+print("dataset size:", len(data))
 
 def visualize_sample(data, sample_idx=0, time_idx=0, num_channels=4):
     """
@@ -61,6 +65,6 @@ def visualize_sample(data, sample_idx=0, time_idx=0, num_channels=4):
     plt.show()
     plt.savefig('d.png')
 
-idx = 0
-d = data.__getitem__(idx)
+idx = random.randint(0, len(data))
+d = data[idx]
 visualize_sample(d)
