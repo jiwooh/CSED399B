@@ -7,8 +7,10 @@
 
 ## Roadmap
 ### Papers
-* [Precipitation Prediction Using an Ensemble of Lightweight Learners](https://arxiv.org/abs/2401.09424)
-* [Convolutional LSTM Network: A Machine Learning Approach for Precipitation Nowcasting](https://arxiv.org/abs/1506.04214)
+* [Precipitation Prediction Using an Ensemble of Lightweight Learners (2023)](https://arxiv.org/abs/2401.09424)
+* [Convolutional LSTM Network: A Machine Learning Approach for Precipitation Nowcasting (2015)](https://arxiv.org/abs/1506.04214)
+* [Skilful precipitation nowcasting using deep generative models of radar (2021)](https://www.nature.com/articles/s41586-021-03854-z)
+* [Skilful nowcasting of extreme precipitation with NowcastNet (2023)](https://www.nature.com/articles/s41586-023-06184-4)
 
 ### 
 
@@ -18,3 +20,8 @@
   * dataset can be downloaded [here](https://weather4cast.net/get-the-data/) (or [here](https://cds.climate.copernicus.eu/#!/home))
   * train_stage1.py: submodule UNet of model MoE is causing errors
     sat2rad() should return a Tensor but returns tuple
+* w4c-ConvLSTM
+  * error on train.py line 120: dimension issues
+  * sample visualized data point from w4c dataset:
+    ![](w4c-ConvLSTM/d.png)
+    Time 1, 8, 9 (and even 10) contains potential erronous images
